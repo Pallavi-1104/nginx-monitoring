@@ -28,45 +28,45 @@ Create a directory to store the configuration:
 
 In this file, configure Prometheus to scrape both Node Exporter and Nginx Exporter metrics:
 
-  global:
-    scrape_interval: 15s
+    global:
+      scrape_interval: 15s
+    
+    scrape_configs:
+      - job_name: 'prometheus'
+        static_configs:
+          - targets: ['localhost:9090']
   
-  scrape_configs:
-    - job_name: 'prometheus'
-      static_configs:
-        - targets: ['localhost:9090']
-  
-    - job_name: 'node_exporter'
-      static_configs:
-        - targets: ['localhost:9100']
-  
-    - job_name: 'nginx_exporter'
-      static_configs:
-        - targets: ['localhost:9113']
+      - job_name: 'node_exporter'
+        static_configs:
+          - targets: ['localhost:9100']
+    
+      - job_name: 'nginx_exporter'
+        static_configs:
+          - targets: ['localhost:9113']
 
 b. Run Prometheus Container:
 Now run the Prometheus container with the custom configuration file:
 
-  docker run -d \
-    -p 9090:9090 \
-    -v ~/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
-    --name prometheus \
-    prom/prometheus
+    docker run -d \
+      -p 9090:9090 \
+      -v ~/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+      --name prometheus \
+      prom/prometheus
 
  This exposes Prometheus on port 9090.
 
 c. Verify Prometheus:
 Check if Prometheus is running by accessing:
 
-  http://<your-server-ip>:9090
+    http://<your-server-ip>:9090
 
 3. Run Node Exporter to Collect System Metrics
 Prometheus Node Exporter collects system-level metrics (CPU, memory, etc.). To monitor the host where Nginx is running, launch Node Exporter in a container:
 
-  docker run -d \
-    -p 9100:9100 \
-    --name node-exporter \
-    prom/node-exporter
+    docker run -d \
+      -p 9100:9100 \
+      --name node-exporter \
+      prom/node-exporter
   
 This exposes Node Exporter on port 9100.
 
@@ -76,11 +76,11 @@ Nginx doesn’t expose metrics natively, so we’ll use Nginx Exporter to gather
 a. Install Nginx Exporter:
 Run the Nginx Exporter container, which scrapes metrics from Nginx’s status page:
 
-  docker run -d \
-    --name nginx-exporter \
-    -p 9113:9113 \
-    nginx/nginx-prometheus-exporter:latest \
-    -nginx.scrape-uri=http://<your-server-ip>:80/nginx_status
+    docker run -d \
+      --name nginx-exporter \
+      -p 9113:9113 \
+      nginx/nginx-prometheus-exporter:latest \
+      -nginx.scrape-uri=http://<your-server-ip>:80/nginx_status
   
 Ensure that Nginx is configured to expose the status page at http://localhost/nginx_status.
 
@@ -92,37 +92,37 @@ If your Nginx container doesn't have the status page configured, modify its defa
 2. Steps:
    Run a bash shell inside the Nginx container
 
-     docker exec -it nginx bash
+       docker exec -it nginx bash
 
  - Edit the Nginx default config file (/etc/nginx/nginx.conf or /etc/nginx/conf.d/default.conf) to include the following:
 
-    server {
-    listen 80;
-  
-    location /nginx_status {
-      stub_status on;
-      access_log off;
-      allow 127.0.0.1;
-      allow <your-server-ip>;
-      deny all;
+      server {
+      listen 80;
+    
+      location /nginx_status {
+        stub_status on;
+        access_log off;
+        allow 127.0.0.1;
+        allow <your-server-ip>;
+        deny all;
+      }
     }
-  }
 
 - Exit the container and reload Nginx:
-- 
-  docker exec nginx nginx -s reload
+
+    docker exec nginx nginx -s reload
 
   Now the Nginx status page should be available at:
 
-  http://<your-server-ip>:80/nginx_status
+    http://<your-server-ip>:80/nginx_status
 
   5. Run Grafana Container
 Now, run the Grafana container to visualize the metrics from Prometheus:
 
-docker run -d \
-  -p 3000:3000 \
-  --name grafana \
-  grafana/grafana
+    docker run -d \
+      -p 3000:3000 \
+      --name grafana \
+      grafana/grafana
   
 - Grafana will be available at http://<your-server-ip>:3000 with default credentials admin/admin.
 
@@ -159,19 +159,19 @@ Similarly, create panels for system metrics:
 To make sure your configuration and data persist even after container restarts, you can mount Docker volumes for Prometheus and Grafana.
 
 a. Prometheus Data Persistence:
-docker run -d \
-  -p 9090:9090 \
-  -v ~/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
-  -v ~/prometheus_data:/prometheus \
-  --name prometheus \
-  prom/prometheus
+  docker run -d \
+    -p 9090:9090 \
+    -v ~/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+    -v ~/prometheus_data:/prometheus \
+    --name prometheus \
+    prom/prometheus
 
 b. Grafana Data Persistence:
-docker run -d \
-  -p 3000:3000 \
-  -v ~/grafana_data:/var/lib/grafana \
-  --name grafana \
-  grafana/grafana
+  docker run -d \
+    -p 3000:3000 \
+    -v ~/grafana_data:/var/lib/grafana \
+    --name grafana \
+    grafana/grafana
 
 9. Verify the Setup
   - Nginx should be running on port 80.
