@@ -160,6 +160,7 @@ Similarly, create panels for system metrics:
 To make sure your configuration and data persist even after container restarts, you can mount Docker volumes for Prometheus and Grafana.
 
    a. Prometheus Data Persistence:
+   
                   docker run -d \
                     -p 9090:9090 \
                     -v ~/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
@@ -168,6 +169,7 @@ To make sure your configuration and data persist even after container restarts, 
                     prom/prometheus
 
 b. Grafana Data Persistence:
+
                   docker run -d \
                     -p 3000:3000 \
                     -v ~/grafana_data:/var/lib/grafana \
