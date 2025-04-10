@@ -8,10 +8,10 @@ Steps:
 1. Run Nginx Web Server in a Docker Container
 Run an Nginx container using Docker:
 
-  sudo docker run -d \
-    --name nginx \
-    -p 80:80 \
-    nginx
+      sudo docker run -d \
+        --name nginx \
+        -p 80:80 \
+        nginx
   
   This command pulls the nginx image and exposes it on port 80 of your Docker host. Verify by accessing the Nginx web server in your browser:
   http://<your-server-ip>
@@ -64,9 +64,9 @@ Check if Prometheus is running by accessing:
 Prometheus Node Exporter collects system-level metrics (CPU, memory, etc.). To monitor the host where Nginx is running, launch Node Exporter in a container:
 
      docker run -d \
-        -p 9100:9100 \
-        --name node-exporter \
-        prom/node-exporter
+          -p 9100:9100 \
+          --name node-exporter \
+          prom/node-exporter
   
 This exposes Node Exporter on port 9100.
 
@@ -96,34 +96,34 @@ If your Nginx container doesn't have the status page configured, modify its defa
 
  - Edit the Nginx default config file (/etc/nginx/nginx.conf or /etc/nginx/conf.d/default.conf) to include the following:
 
-      server {
-      listen 80;
-    
-      location /nginx_status {
-        stub_status on;
-        access_log off;
-        allow 127.0.0.1;
-        allow <your-server-ip>;
-        deny all;
-      }
-    }
+          server {
+          listen 80;
+        
+          location /nginx_status {
+            stub_status on;
+            access_log off;
+            allow 127.0.0.1;
+            allow <your-server-ip>;
+            deny all;
+          }
+        }
 
 - Exit the container and reload Nginx:
-
-    docker exec nginx nginx -s reload
+    
+        docker exec nginx nginx -s reload
 
   Now the Nginx status page should be available at:
 
-    http://<your-server-ip>:80/nginx_status
+        http://<your-server-ip>:80/nginx_status
 
   5. Run Grafana Container
 Now, run the Grafana container to visualize the metrics from Prometheus:
 
-    docker run -d \
-      -p 3000:3000 \
-      --name grafana \
-      grafana/grafana
-  
+        docker run -d \
+          -p 3000:3000 \
+          --name grafana \
+          grafana/grafana
+      
 - Grafana will be available at http://<your-server-ip>:3000 with default credentials admin/admin.
 
   6. Add Prometheus as a Data Source in Grafana
@@ -159,19 +159,19 @@ Similarly, create panels for system metrics:
 To make sure your configuration and data persist even after container restarts, you can mount Docker volumes for Prometheus and Grafana.
 
 a. Prometheus Data Persistence:
-  docker run -d \
-    -p 9090:9090 \
-    -v ~/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
-    -v ~/prometheus_data:/prometheus \
-    --name prometheus \
-    prom/prometheus
+      docker run -d \
+        -p 9090:9090 \
+        -v ~/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+        -v ~/prometheus_data:/prometheus \
+        --name prometheus \
+        prom/prometheus
 
 b. Grafana Data Persistence:
-  docker run -d \
-    -p 3000:3000 \
-    -v ~/grafana_data:/var/lib/grafana \
-    --name grafana \
-    grafana/grafana
+      docker run -d \
+        -p 3000:3000 \
+        -v ~/grafana_data:/var/lib/grafana \
+        --name grafana \
+        grafana/grafana
 
 9. Verify the Setup
   - Nginx should be running on port 80.
