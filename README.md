@@ -23,7 +23,8 @@ Create one Instance and connect
               sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
             sudo apt-get update
 
-     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 
 1. Run Nginx Web Server in a Docker Container
