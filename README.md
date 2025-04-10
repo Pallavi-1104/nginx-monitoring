@@ -14,7 +14,7 @@ Run an Nginx container using Docker:
                     nginx
   
   This command pulls the nginx image and exposes it on port 80 of your Docker host. Verify by accessing the Nginx web server in your browser:
-  http://<your-server-ip>
+            http://<your-server-ip>
 
   2. Run Prometheus Container
 Now, configure and run Prometheus to monitor Nginx metrics.
@@ -22,9 +22,9 @@ Now, configure and run Prometheus to monitor Nginx metrics.
 a. Create Prometheus Configuration File (prometheus.yml):
 Create a directory to store the configuration:
 
-  mkdir -p ~/prometheus
-  cd ~/prometheus
-  nano prometheus.yml
+              mkdir -p ~/prometheus
+              cd ~/prometheus
+              nano prometheus.yml
 
 In this file, configure Prometheus to scrape both Node Exporter and Nginx Exporter metrics:
 
