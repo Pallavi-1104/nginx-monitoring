@@ -63,10 +63,10 @@ Check if Prometheus is running by accessing:
 3. Run Node Exporter to Collect System Metrics
 Prometheus Node Exporter collects system-level metrics (CPU, memory, etc.). To monitor the host where Nginx is running, launch Node Exporter in a container:
 
-    docker run -d \
-      -p 9100:9100 \
-      --name node-exporter \
-      prom/node-exporter
+     docker run -d \
+        -p 9100:9100 \
+        --name node-exporter \
+        prom/node-exporter
   
 This exposes Node Exporter on port 9100.
 
