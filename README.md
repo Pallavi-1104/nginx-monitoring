@@ -1,4 +1,4 @@
-# nginx-monitoring
+# nginx-monitoring-using-prometheus-grafana
 
 To add an Nginx web server using Docker and monitor it using Prometheus and Grafana, you need to run the Nginx container and use Prometheus Node Exporter to collect system-level metrics. You'll also configure Nginx Exporter to scrape Nginx-specific metrics, and finally, visualize everything in Grafana.
 
