@@ -8,10 +8,10 @@ Steps:
 1. Run Nginx Web Server in a Docker Container
 Run an Nginx container using Docker:
 
-      sudo docker run -d \
-        --name nginx \
-        -p 80:80 \
-        nginx
+            sudo docker run -d \
+                    --name nginx \
+                    -p 80:80 \
+                    nginx
   
   This command pulls the nginx image and exposes it on port 80 of your Docker host. Verify by accessing the Nginx web server in your browser:
   http://<your-server-ip>
