@@ -37,7 +37,7 @@ Run an Nginx container using Docker:
   
   This command pulls the nginx image and exposes it on port 80 of your Docker host. Verify by accessing the Nginx web server in your browser:
                         
-             http://<your-server-ip>
+             http://<your-server-ip>:80
              
   2. Run Prometheus Container
 Now, configure and run Prometheus to monitor Nginx metrics.
